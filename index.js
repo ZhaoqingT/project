@@ -11,7 +11,8 @@ app.get('/',function(req,res){
 //app.get('/', function (req, res) {
   //res.send('Hello World!')
 //})
-
+app.use('/css', express.static('css'))
+app.use('/js',express.static('js'))
 app.listen(PORT_NUMBER, function () {
   console.log('Example app listening on' +  PORT_NUMBER + ' !')
 })
