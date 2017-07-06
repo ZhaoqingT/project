@@ -1,6 +1,5 @@
 var DEFAULT_ZOOM = 15;
-var GOOGLE_API_KEY = 'AIzaSyDHNnsp8pXJTrCtHF1sizDksBFAyRq_hVo';
-//var GOOGLE_API_KEY = 'AIzaSyDFDg1ruZ4GQqPHMv1Z4Lprn_2wXyd0NYk';
+var GOOGLE_API_KEY = 'AIzaSyDFDg1ruZ4GQqPHMv1Z4Lprn_2wXyd0NYk';
 var DEFAULT_RADIUS = 1500;
 var DEFAULT_LAT = 37.773972;
 var DEFAULT_LNG = -122.43129;
@@ -50,9 +49,23 @@ $(function() {
             }
             infowindow.open(map, marker);
             current_infowindow = infowindow;
+            showDetailedInfo(place);
           });
         });
       }
+    });
+  }
+
+  function showDetailedInfo(place) {
+    var params = {
+      placeId: place['place_id']
+    };
+    service.getDetails(params, function(place) {
+      $('#hero-header-wrapper img').attr('src', place.photos[0].getUrl({'maxWidth': 408, 'maxheight': 407}));
+      $('.place-name').text(place['name']);
+      $('.place-review-score').text(place['rating']);
+      $('.place-type').text(place['types'][0]);
+      $('#place-info-wrapper').show();
     });
   }
 

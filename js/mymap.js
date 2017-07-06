@@ -13,15 +13,18 @@ $(function(){
 		lng: DEFAULT_LNG
 	    }
 	});
+
 	var params = {
 	    'location':new google.maps.LatLng(DEFAULT_LAT, DEFAULT_LNG),
 	    'radius':DEFAULT_RADIUS,
 	    'type':'restaurant'
 	};
+
 	service = new google.maps.places.PlacesService(map);
 	service.nearbySearch(params, function(results, status) {
 	    if(status == google.maps.places.PlacesServiceStatus.OK){
 		var current_infowindow;
+
 		_.each(results, function(place){
 		    var marker = new google.maps.Marker({
 			position: {
@@ -43,11 +46,27 @@ $(function(){
 			}
 			infowindow.open(map, marker);
 			current_infowindow=infowindow;
+			showDetailedInfo1(place);
 		    });
 		});
 	    }
 	});
     }
+
+  function showDetailedInfo1(place) {
+    var params = {
+      placeId: place['place_id']
+    };
+    service.getDetails(params, function(place){
+            $('#hero-header-wrapper img').attr('src',place.photos[0].getUrl({'maxWidth':408,'maxheight':407}));
+            $('.place-name').text(place['name']);
+            $('.place-review-score').text(place['rating']);
+            $('.place-type').text(place['types'][0]);
+            $('#place-info-wrapper').show();
+        });
+}
+
     initMap();
+
 });
 
